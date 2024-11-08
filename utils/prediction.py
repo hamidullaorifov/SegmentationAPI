@@ -1,4 +1,4 @@
-from nnUNet.nnunet.inference.predict import predict_from_folder
+from nnunet.inference.predict import predict_from_folder
 from core.config import MODEL_FOLDER
 
 
