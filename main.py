@@ -20,5 +20,5 @@ print("ENVVVVV:", os.environ.get("RESULTS_FOLDER"))
 
 app.include_router(segmentation.router)
 
-public_url = ngrok.connect(8000)
-print("Public URL:", public_url)
+# public_url = ngrok.connect(8000)
+# print("Public URL:", public_url)

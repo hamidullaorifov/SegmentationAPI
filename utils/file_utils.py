@@ -1,26 +1,8 @@
 import os
-from celery_app import celery
 import zipfile
 import shutil
 from fastapi import HTTPException, UploadFile
 
-
-
-@celery.task
-def process_file(file_path, patient_id):
-    extracted_path = f"temp/extracted/{patient_id}"
-    nifti_output_path = f"temp/nifti/{patient_id}"
-
-    # Extract and convert steps here
-    os.makedirs(extracted_path, exist_ok=True)
-    with zipfile.ZipFile(file_path, "r") as zip_ref:
-        zip_ref.extractall(extracted_path)
-    convert_dicom_to_nifti(extracted_path, nifti_output_path)
-
-    # Cleanup
-    os.remove(file_path)
-    shutil.rmtree(extracted_path)
-    return {"message": f"File successfully processed and saved to {nifti_output_path}"}
 
 
 
