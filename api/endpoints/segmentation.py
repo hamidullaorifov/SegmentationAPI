@@ -5,10 +5,8 @@ from fastapi import APIRouter, Depends, File, UploadFile
 from fastapi.exceptions import HTTPException
 
 
-from core.config import TEMP_ZIP_INPUT_DIR, TEMP_EXTRACTED_DICOM, TEMP_INPUT_NIFTI
-from utils.image_utils import convert_dicom_to_nifti
-from utils.file_utils import validate_zipfile_type, save_upload, extract_zip, cleanup, get_first_nifti_filename
-# from utils.prediction import predict
+from core.config import TEMP_ZIP_INPUT_DIR
+from utils.file_utils import validate_zipfile_type, save_upload
 from utils.tasks import process_file
 
 router = APIRouter(tags=['Segmentation'])
@@ -21,16 +19,13 @@ async def upload_file(file: UploadFile = File(...)):
 
     patient_id = os.path.splitext(file.filename)[0]
     zip_path = os.path.join(TEMP_ZIP_INPUT_DIR, file.filename)
-    
 
     # Create necessary directories
     os.makedirs(TEMP_ZIP_INPUT_DIR, exist_ok=True)
 
     # Process the upload: save, extract, convert, and clean up
     await save_upload(file, zip_path)
-    print("Processing started...")
     task = process_file.delay(zip_path, patient_id)
-    print("Processing finished!")
     return {"message": "File processing started", "task_id": task.id}
 
 
