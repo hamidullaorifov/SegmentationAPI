@@ -7,6 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TEMP_FILES = BASE_DIR / 'temp'
 TEMP_ZIP_INPUT_DIR = TEMP_FILES / 'zip' / 'input'
 TEMP_EXTRACTED_DICOM = TEMP_FILES / 'files' / 'dicom'
+TEMP_RTSTRUCT_DIR = TEMP_FILES / 'files' / 'rtstruct'
 TEMP_INPUT_NIFTI = TEMP_FILES / 'files' / 'nifti'
 
 

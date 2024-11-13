@@ -4,9 +4,9 @@ import shutil
 
 from fastapi.exceptions import HTTPException
 from celery_app import celery
-from utils.image_utils import convert_dicom_to_nifti
+from utils.image_utils import convert_dicom_to_nifti, convert_nifti_to_rtStruct
 from utils.file_utils import extract_zip, cleanup, get_nifti_filename
-from core.config import TEMP_EXTRACTED_DICOM, TEMP_INPUT_NIFTI, PREDICTIONS_FOLDER
+from core.config import TEMP_EXTRACTED_DICOM, TEMP_INPUT_NIFTI, PREDICTIONS_FOLDER, TEMP_RTSTRUCT_DIR
 from utils.prediction import predict
 
 
@@ -47,7 +47,17 @@ def process_file(zipfile_path, patient_id):
     # Execute prdeiction
     predict(nifti_output_path, prediction_result_folder)
 
+    # Get predicted image filename
+    predicted_filename =  get_nifti_filename(prediction_result_folder)
+
+    # Convert to RTStruct
+    output_dicom_folder = os.path.join(TEMP_RTSTRUCT_DIR, patient_id)
+    os.makedirs(output_dicom_folder, exist_ok=True)
+
+    input_nifti_path = os.path.join(prediction_result_folder, predicted_filename)
+    rtstruct_file_path = convert_nifti_to_rtStruct(input_nifti_path, extracted_path, output_dicom_folder)
+    
     # Cleanup
     
     # shutil.rmtree(extracted_path)
-    return {"message": "File successfully processed and saved"}
+    return {"message": f"File successfully processed and saved in: {rtstruct_file_path}"}
