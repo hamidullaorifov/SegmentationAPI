@@ -5,11 +5,8 @@ from core.config import TRAINING_RESULTS_FOLDER
 from dotenv import load_dotenv
 import subprocess
 
-load_dotenv()
 
-print("RFOLDERRRR:", os.environ.get("RESULTS_FOLDER"))
 os.environ['RESULTS_FOLDER'] = TRAINING_RESULTS_FOLDER
-print("RESULTS_FOLDERRRR:", os.environ.get("RESULTS_FOLDER"))
 
 
 def predict(nifti_output_path, prediction_result_folder):

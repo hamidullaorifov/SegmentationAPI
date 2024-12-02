@@ -268,7 +268,3 @@ def convert_nifti_to_rtStruct(input_nifti_path: str, input_dicom_path: str, outp
     print('RTSTRUCT saved as %s'%RTDCM_name)
     return RTDCM_name
 
-
-
-
-

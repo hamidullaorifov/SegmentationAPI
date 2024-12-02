@@ -3,11 +3,12 @@ import os
 # Root project directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+STATIC_FILES = os.path.join(BASE_DIR, 'static')
+RTSTRUCT_DIR = os.path.join(STATIC_FILES, 'rtstruct')
 # Define temporary directories
 TEMP_FILES = BASE_DIR / 'temp'
 TEMP_ZIP_INPUT_DIR = TEMP_FILES / 'zip' / 'input'
 TEMP_EXTRACTED_DICOM = TEMP_FILES / 'files' / 'dicom'
-TEMP_RTSTRUCT_DIR = TEMP_FILES / 'files' / 'rtstruct'
 TEMP_INPUT_NIFTI = TEMP_FILES / 'files' / 'nifti'
 
 

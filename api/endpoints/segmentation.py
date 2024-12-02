@@ -1,7 +1,8 @@
 import os
 from typing import List
 
-from fastapi import APIRouter, Depends, File, UploadFile
+from fastapi import APIRouter, Request, File, UploadFile
+from fastapi.responses import FileResponse
 from fastapi.exceptions import HTTPException
 
 
@@ -30,14 +31,14 @@ async def upload_file(file: UploadFile = File(...)):
 
 
 @router.get("/segmentation/status/{task_id}")
-async def get_task_status(task_id: str):
+async def get_task_status(request: Request, task_id: str):
     task_result = process_file.AsyncResult(task_id)
-    if task_result.state == "PENDING":
-        return {"status": "Processing"}
-    elif task_result.state == "SUCCESS":
-        return {"status": "Completed", "result": task_result.result}
+    if task_result.state == "SUCCESS":
+        file_path = task_result.result['file_path'][1:]  # Removing leading slash
+        full_file_path = f"{request.base_url}{file_path}" # file_path starts with /
+        return {"status": "Completed", "file_path": full_file_path}
     else:
-        return {"status": "Failed"}
+        return {"status": task_result.state}
 
 
 '''
